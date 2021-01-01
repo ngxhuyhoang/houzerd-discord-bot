@@ -8,4 +8,4 @@ COPY . .
 
 RUN npm run build
 
-CMD ["node", "buid/index"]
+CMD ["node", "build/index"]
