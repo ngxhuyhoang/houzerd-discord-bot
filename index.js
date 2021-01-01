@@ -159,8 +159,10 @@ function play(guild, song, message) {
   try {
     const serverQueue = queue.get(guild.id);
     if (!song) {
-      serverQueue.voiceChannel.leave();
-      queue.delete(guild.id);
+      setTimeout(() => {
+        serverQueue.voiceChannel.leave();
+        queue.delete(guild.id);
+      }, 60000);
       return;
     }
 
