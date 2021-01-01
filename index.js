@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const ytdl = require("ytdl-core");
 require("dotenv").config();
 
-const prefix = "hz!";
+const prefix = "$";
 
 const client = new Discord.Client();
 
@@ -95,6 +95,10 @@ async function execute(message, serverQueue) {
       return message.channel.send(err);
     }
   } else {
+    if (!!serverQueue.songs.find((item) => item.url === song.url)) {
+      serverQueue.textChannel.send(`Bài này có người mở rồi`);
+      return;
+    }
     serverQueue.songs.push(song);
     return message.channel.send(`Đã thêm ${song.title} vào list nhạc`);
   }
@@ -145,7 +149,7 @@ function play(guild, song) {
 }
 
 const listPlayingSong = (message, serverQueue) => {
-  if (!serverQueue?.songs || !serverQueue.song.length) {
+  if (!serverQueue?.songs) {
     message.channel.send("List trống trơn");
     return;
   }
