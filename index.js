@@ -89,7 +89,6 @@ async function execute(message, serverQueue) {
       var connection = await voiceChannel.join();
       queueContruct.connection = connection;
       play(message.guild, queueContruct.songs[0]);
-      console.log("Play");
     } catch (err) {
       console.log(err);
       queue.delete(message.guild.id);
@@ -123,22 +122,26 @@ function stop(message, serverQueue) {
 }
 
 function play(guild, song) {
-  const serverQueue = queue.get(guild.id);
-  if (!song) {
-    serverQueue.voiceChannel.leave();
-    queue.delete(guild.id);
-    return;
-  }
+  try {
+    const serverQueue = queue.get(guild.id);
+    if (!song) {
+      serverQueue.voiceChannel.leave();
+      queue.delete(guild.id);
+      return;
+    }
 
-  const dispatcher = serverQueue.connection
-    .play(ytdl(song.url))
-    .on("finish", () => {
-      serverQueue.songs.shift();
-      play(guild, serverQueue.songs[0]);
-    })
-    .on("error", (error) => console.error(error));
-  dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-  serverQueue.textChannel.send(`Đang mở: **${song.title}**`);
+    const dispatcher = serverQueue.connection
+      .play(ytdl(song.url))
+      .on("finish", () => {
+        serverQueue.songs.shift();
+        play(guild, serverQueue.songs[0]);
+      })
+      .on("error", (error) => console.error(error));
+    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+    serverQueue.textChannel.send(`Đang mở: **${song.title}**`);
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 const listPlayingSong = (message, serverQueue) => {
