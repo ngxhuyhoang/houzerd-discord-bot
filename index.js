@@ -29,15 +29,24 @@ client.on("message", async (message) => {
   if (message.content.startsWith(`${prefix}play`)) {
     execute(message, serverQueue);
     return;
-  } else if (message.content.startsWith(`${prefix}skip`)) {
+  }
+
+  if (message.content.startsWith(`${prefix}skip`)) {
     skip(message, serverQueue);
     return;
-  } else if (message.content.startsWith(`${prefix}stop`)) {
+  }
+
+  if (message.content === `${prefix}stop`) {
     stop(message, serverQueue);
     return;
-  } else {
-    message.channel.send("Sai lệnh rồi");
   }
+
+  if (message.content === `${prefix}list`) {
+    listPlayingSong(message, serverQueue);
+    return;
+  }
+
+  message.channel.send("Sai lệnh rồi");
 });
 
 async function execute(message, serverQueue) {
@@ -54,20 +63,13 @@ async function execute(message, serverQueue) {
   }
 
   const songInfo = await ytdl.getInfo(args[1]);
-  const song: { title: string; url: string } = {
+  const song = {
     title: songInfo.videoDetails.title,
     url: songInfo.videoDetails.video_url,
   };
 
   if (!serverQueue) {
-    const queueContruct: {
-      textChannel: any;
-      voiceChannel: any;
-      connection: null;
-      songs: any[];
-      volume: number;
-      playing: boolean;
-    } = {
+    const queueContruct = {
       textChannel: message.channel,
       voiceChannel: voiceChannel,
       connection: null,
@@ -134,5 +136,21 @@ function play(guild, song) {
   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
   serverQueue.textChannel.send(`Đang mở: **${song.title}**`);
 }
+
+const listPlayingSong = (message, serverQueue) => {
+  if (!serverQueue?.songs || !serverQueue.song.length) {
+    message.channel.send("List trống trơn");
+    return;
+  }
+
+  const songTitle = serverQueue.songs
+    .map((song, index) => `> [${index + 1}] - ${song.title}`)
+    .join("\n");
+
+  message.channel.send(`
+  Danh sách những bài đang mở
+  ${songTitle}
+  `);
+};
 
 client.login(process.env.TOKEN);
