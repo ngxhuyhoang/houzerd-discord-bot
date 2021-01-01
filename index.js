@@ -24,49 +24,53 @@ client.on('message', async (message) => {
   if (message.author.bot) return;
   if (!message.content.startsWith(prefix)) return;
 
-  const serverQueue = queue.get(message.guild.id);
+  try {
+    const serverQueue = queue.get(message.guild.id);
 
-  if (message.content === `${prefix}help`) {
-    message.channel.send(`
-    Lệnh:
-    - ${prefix}play + [Link YouTube]: Phát nhạc
-    - ${prefix}skip: Chuyển bài tiếp theo
-    - ${prefix}stop: Dừng phát nhạc
-    - ${prefix}list: Hiển thị list nhạc hiện tại
-    - ${prefix}np: Hiển thị bài nhạc đang phát
-    `);
-    return;
+    if (message.content === `${prefix}help`) {
+      message.channel.send(`
+      Lệnh:
+      - ${prefix}play + [Link YouTube]: Phát nhạc
+      - ${prefix}skip: Chuyển bài tiếp theo
+      - ${prefix}stop: Dừng phát nhạc
+      - ${prefix}list: Hiển thị list nhạc hiện tại
+      - ${prefix}np: Hiển thị bài nhạc đang phát
+      `);
+      return;
+    }
+
+    if (message.content.startsWith(`${prefix}play`)) {
+      execute(message, serverQueue);
+      return;
+    }
+
+    if (message.content.startsWith(`${prefix}skip`)) {
+      skip(message, serverQueue);
+      console.log('Skip');
+      return;
+    }
+
+    if (message.content === `${prefix}stop`) {
+      stop(message, serverQueue);
+      console.log('Stop');
+      return;
+    }
+
+    if (message.content === `${prefix}list`) {
+      listPlayingSong(message, serverQueue);
+      console.log('List');
+      return;
+    }
+
+    if (message.content === `${prefix}np`) {
+      playing(message, serverQueue);
+      return;
+    }
+
+    message.channel.send('Sai lệnh rồi');
+  } catch (e) {
+    console.log(e);
   }
-
-  if (message.content.startsWith(`${prefix}play`)) {
-    execute(message, serverQueue);
-    return;
-  }
-
-  if (message.content.startsWith(`${prefix}skip`)) {
-    skip(message, serverQueue);
-    console.log('Skip');
-    return;
-  }
-
-  if (message.content === `${prefix}stop`) {
-    stop(message, serverQueue);
-    console.log('Stop');
-    return;
-  }
-
-  if (message.content === `${prefix}list`) {
-    listPlayingSong(message, serverQueue);
-    console.log('List');
-    return;
-  }
-
-  if (message.content === `${prefix}np`) {
-    playing(message, serverQueue);
-    return;
-  }
-
-  message.channel.send('Sai lệnh rồi');
 });
 
 async function execute(message, serverQueue) {
