@@ -28,7 +28,7 @@ jobs:
         #   builder: ${{ steps.buildx.outputs.name }}
         #   push: true
         #   tags: ${{ secrets.DOCKERHUB_USERNAME }}/houzerd-discord-bot
-        run: docker buildx build --platform linux/arm64 --tag=hoangnh0099/houzerd-discord-bot:latest . && docker push docker.io/hoangnh0099/houzerd-discord-bot:latest
+        run: docker buildx build --platform linux/arm64 -t hoangnh0099/houzerd-discord-bot:latest . && docker push hub.docker.com/hoangnh0099/houzerd-discord-bot:latest
 
       - name: Verify
         run: echo ${{ steps.docker_build.outputs.digest }}
