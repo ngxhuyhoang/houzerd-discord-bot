@@ -33,16 +33,19 @@ client.on("message", async (message) => {
 
   if (message.content.startsWith(`${prefix}skip`)) {
     skip(message, serverQueue);
+    console.log("Skip");
     return;
   }
 
   if (message.content === `${prefix}stop`) {
     stop(message, serverQueue);
+    console.log("Stop");
     return;
   }
 
   if (message.content === `${prefix}list`) {
     listPlayingSong(message, serverQueue);
+    console.log("List");
     return;
   }
 
@@ -86,6 +89,7 @@ async function execute(message, serverQueue) {
       var connection = await voiceChannel.join();
       queueContruct.connection = connection;
       play(message.guild, queueContruct.songs[0]);
+      console.log("Play");
     } catch (err) {
       console.log(err);
       queue.delete(message.guild.id);
