@@ -1,7 +1,7 @@
 name: houzerd-discord-bot
 on:
   push:
-    branches: [develop]
+    branches: [master]
 jobs:
   docker:
     runs-on: ubuntu-latest
