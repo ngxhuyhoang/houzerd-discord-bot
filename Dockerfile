@@ -1,4 +1,4 @@
-FROM arm64/node
+FROM arm64v8/node
 
 COPY package*.json ./
 
