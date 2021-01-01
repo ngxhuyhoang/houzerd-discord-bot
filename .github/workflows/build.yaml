@@ -28,7 +28,7 @@ jobs:
         #   builder: ${{ steps.buildx.outputs.name }}
         #   push: true
         #   tags: ${{ secrets.DOCKERHUB_USERNAME }}/houzerd-discord-bot
-        run: docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --output type=image,push=true
+        run: docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --output type=image,push=true .
 
       - name: Verify
         run: echo ${{ steps.docker_build.outputs.digest }}
