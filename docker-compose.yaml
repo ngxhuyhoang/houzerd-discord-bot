@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  discord:
+    image: hoangnh0099/houzerd-discord-bot
+    command: npm start
+    env_file:
+      - .env

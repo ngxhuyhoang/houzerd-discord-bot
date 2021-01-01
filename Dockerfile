@@ -1,3 +1,5 @@
+FROM dockcross/linux-armv8
+
 FROM node:15.5.0-alpine
 
 COPY package*.json ./
