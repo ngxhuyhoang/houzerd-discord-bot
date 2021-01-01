@@ -9,5 +9,3 @@ COPY . .
 RUN npm run build
 
 CMD ["node", "buid/index"]
-
-EXPOSE 8080
