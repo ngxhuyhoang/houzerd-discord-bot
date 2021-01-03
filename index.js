@@ -90,8 +90,6 @@ async function execute(message, serverQueue) {
 
   let songInfo;
 
-  debugger;
-
   try {
     songInfo = await ytdl.getInfo(args[1]);
   } catch (e) {
@@ -187,7 +185,7 @@ function play(guild, song, message) {
       })
       .on('error', (error) => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-    serverQueue.textChannel.send(`${message?.author} đã mở: **${song.title}**`);
+    serverQueue.textChannel.send(`Đã mở: **${song.title}**`);
   } catch (e) {
     console.log(e);
     serverQueue.textChannel.send(e);
